@@ -33,12 +33,9 @@
 	<script type="text/javascript" src="js/query.js"></script>
 	<script type="text/javascript" src="js/teams.js"></script>
 	<script type="text/javascript">
-  var objects;
-
 	const boardSize = +getQueryParam('size') || +getQueryParam('boardSize') || 8;
 	const players = +getQueryParam('players') || 3;
 
-	window.onload = function(evt) {
 		// setup the thing
 		var scene = new vg.Scene({
 			element: document.getElementById('view'),
@@ -65,7 +62,7 @@
 
 		window.board = board;
 		// populate the board
-		objects = [];
+		var objects = [];
 		var modelConfig = {
 			container: board.group,
 			scale: 3,
@@ -127,7 +124,6 @@
 			scene.render();
 			requestAnimationFrame(update);
 		}
-	};
 	</script>
 </body>
 </html>
