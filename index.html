@@ -62,7 +62,7 @@
 
 		window.board = board;
 		// populate the board
-		var objects = [];
+		var pokemons = [], bases = [];
 		var modelConfig = {
 			container: board.group,
 			scale: 3,
@@ -70,12 +70,12 @@
 		};
 		var playerObj = getPlayerBases();
 		playerObj.forEach((player)=>{
-			objects.push(new Model({...modelConfig, ...{rotation: player.rotation, tile: player.base, url: './obj/substitute doll/000 - Substitute Doll'}}));
+			bases.push(new Model({...modelConfig, ...{rotation: player.rotation, tile: player.base, url: './obj/substitute doll/000 - Substitute Doll'}}));
 			board.grid.getNeighbors(player.base.cell).forEach((cell, i)=>{
-				objects.push(new pokemonModel({...modelConfig, ...{rotation: player.rotation, tile: cell.tile}}, (i == 0 ? 'Bulbasaur' : i == 1 ? 'Charmander' : 'Squirtle')));
+				pokemons.push(new pokemonModel({...modelConfig, ...{rotation: player.rotation, tile: cell.tile}}, (i == 0 ? 'Bulbasaur' : i == 1 ? 'Charmander' : 'Squirtle')));
 			});
 		});
-		objects.forEach((obj)=>{
+		[...bases, ...pokemons].forEach((obj)=>{
 			obj.addToScene();
 		})
 
@@ -99,9 +99,9 @@
 						moveEntityToCell(obj);
 						return;
 					}
-					// cycle through the objects, placing them on the clicked tile
-					var p = objects[currentPiece++].obj;
-					if (currentPiece === objects.length) {
+					// cycle through the pokemons, placing them on the clicked tile
+					var p = pokemons[currentPiece++].obj;
+					if (currentPiece === pokemons.length) {
 						currentPiece = 0;
 					}
 					board.setEntityOnTile(p, obj);
