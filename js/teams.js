@@ -32,8 +32,8 @@ function getPlayerBases(){
   } else if (players === 3){
     return [
         {base:corners[0], rotation: 0},
-        {base:corners[2], rotation: ((360 / 6) * 2) * vg.DEG_TO_RAD},
-        {base:corners[4], rotation: ((360 / 6) * 4) * vg.DEG_TO_RAD},
+        {base:corners[2], rotation: ((360 / 6) * 4) * vg.DEG_TO_RAD},
+        {base:corners[4], rotation: ((360 / 6) * 2) * vg.DEG_TO_RAD},
       ];
   } else if (players === 4){
     return [

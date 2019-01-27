@@ -68,12 +68,18 @@
 			scale: 3,
 			heightOffset: 0.5,
 		};
+		var playerObj = getPlayerBases();
 
+		playerObj.forEach((player)=>{
+			addModel({...modelConfig, ...{rotation: player.rotation, tile: player.base}}, 'Substitute Doll');
+		})
+		/*
 		for (i = 0; i < 5; i++) {
 			let myPokemon = Math.random();
 			let pokemon = myPokemon <= 0.33 ? 'Bulbasaur' : myPokemon <= 0.66 ? 'Charmander' : 'Squirtle';
 			addModel(modelConfig, pokemon);
 		}
+		*/
 
 		// keep track of states
 		var currentPiece = 0;

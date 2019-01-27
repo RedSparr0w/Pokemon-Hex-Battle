@@ -9,7 +9,9 @@ const addModel = function(settings, pokemon = 'Bulbasaur', shiny){
 		scale: 3,
 		highlight: 'rgb(0, 168, 228)',
 		heightOffset: 0.5, // how high off the board this object sits
-		obstacle: false
+		obstacle: false,
+		tile: false,
+		rotation: 0,
 	};
 	// attribute override
 	config = {...config, ...settings};
@@ -23,6 +25,14 @@ const addModel = function(settings, pokemon = 'Bulbasaur', shiny){
 	this.highlight = config.highlight;
 	this.heightOffset = config.heightOffset;
 	this.obstacle = config.obstacle;
+	this.tile = config.tile;
+	this.rotation = config.rotation;
+
+	// other objects like the SelectionManager expect these on all objects that are added to the scene
+	this.active = false;
+	this.uniqueId = vg.Tools.generateID();
+	this.objectType = vg.ENT;
+	this.tile = null;
 
 	return new Promise(resolve => {
 		shiny = !!( shiny != undefined ? shiny : Math.random() < 0.1 );
@@ -34,7 +44,8 @@ const addModel = function(settings, pokemon = 'Bulbasaur', shiny){
 					.setMaterials( materials )
           .setPath( `obj/${pokemon.toLowerCase()}/` )
           .load( `${allPokemon[pokemon].dex} - ${pokemon}${shiny ? ' - Shiny' : ''}.obj`, function(obj){
-            obj.scale.set(scale, scale, scale);
+            obj.scale.set(this.scale, this.scale, this.scale);
+            obj.rotation.y = config.rotation;
 						obj.heightOffset = this.heightOffset;
             obj.select = function(){
 								obj = this;
@@ -52,8 +63,8 @@ const addModel = function(settings, pokemon = 'Bulbasaur', shiny){
 								    }
 								});
 							};
-          	this.container.add(obj);
-						board.setEntityOnTile(obj, board.getRandomTile());
+						this.container.add(obj);
+						board.setEntityOnTile(obj, config.tile || board.getRandomTile());
 						objects.push(obj);
 						resolve(obj);
 					});
