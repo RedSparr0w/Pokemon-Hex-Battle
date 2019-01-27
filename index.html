@@ -69,17 +69,15 @@
 			heightOffset: 0.5,
 		};
 		var playerObj = getPlayerBases();
-
 		playerObj.forEach((player)=>{
-			addModel({...modelConfig, ...{rotation: player.rotation, tile: player.base}}, 'Substitute Doll');
+			objects.push(new Model({...modelConfig, ...{rotation: player.rotation, tile: player.base, url: './obj/substitute doll/000 - Substitute Doll'}}));
+			board.grid.getNeighbors(player.base.cell).forEach((cell, i)=>{
+				objects.push(new pokemonModel({...modelConfig, ...{rotation: player.rotation, tile: cell.tile}}, (i == 0 ? 'Bulbasaur' : i == 1 ? 'Charmander' : 'Squirtle')));
+			});
+		});
+		objects.forEach((obj)=>{
+			obj.addToScene();
 		})
-		/*
-		for (i = 0; i < 5; i++) {
-			let myPokemon = Math.random();
-			let pokemon = myPokemon <= 0.33 ? 'Bulbasaur' : myPokemon <= 0.66 ? 'Charmander' : 'Squirtle';
-			addModel(modelConfig, pokemon);
-		}
-		*/
 
 		// keep track of states
 		var currentPiece = 0;
@@ -91,6 +89,7 @@
 				// select the sprite if one was already there
 				var e = obj.entity;
 				console.log(obj);
+				console.log(e);
 				if (e) {
 					selector.select(e, false); // don't fire the signal when firing manually or you'll cause a stack overflow with recursion
 					movingPiece = e; // new move
@@ -101,12 +100,11 @@
 						return;
 					}
 					// cycle through the objects, placing them on the clicked tile
-					var p = objects[currentPiece++];
+					var p = objects[currentPiece++].obj;
 					if (currentPiece === objects.length) {
 						currentPiece = 0;
 					}
 					board.setEntityOnTile(p, obj);
-
 				}
 			}
 			else {
