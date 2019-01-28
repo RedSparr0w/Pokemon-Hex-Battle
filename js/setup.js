@@ -3,7 +3,7 @@ const teamColors = ['#27ae60', '#2980b9', '#8e44ad', '#c0392b', '#f1c40f', '#e67
 function cube_to_axial(x, z){
     var q = x
     var r = z
-    return `${q}.${r}.${(~r + 1)-q}`;
+    return `${q}.${r}.${(-r-q}`;
 }
 //test
 function getCellFromXZ(x,z){
