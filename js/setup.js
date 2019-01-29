@@ -102,6 +102,10 @@ function setupBoard(boardSize, totalPlayers = 3, cellSize = 10){
     cameraPosition: {x:0, y:150, z:150}
   }, true);
 
+  /* Setup the scene */
+  // maximum angle the camera can move down
+  scene.controls.maxPolarAngle = 1.4
+
   // this constructs the cells in grid coordinate space
   const grid = new vg.HexGrid({
     cellSize, // size of individual cells
