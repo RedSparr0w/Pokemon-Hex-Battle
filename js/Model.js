@@ -2,7 +2,6 @@ var allPokemon = {Bulbasaur:{dex:"001"},Ivysaur:{dex:"002"},Venusaur:{dex:"003"}
 
 function pokemonModel(settings, pokemon = 'Bulbasaur', shiny){
   shiny = !!( shiny != undefined ? shiny : Math.random() < 0.1 );
-  console.log(pokemon);
   settings.url = `./obj/${pokemon.toLowerCase()}/${allPokemon[pokemon].dex} - ${pokemon}${shiny ? ' - Shiny' : ''}`;
   return new Model(settings);
 }
@@ -23,7 +22,6 @@ function getMTL(url){
 
 function getOBJ(url, material){
   return new Promise(resolve => {
-    console.log(url)
     new THREE.OBJLoader()
       .setMaterials( material )
       .load( `${url}.obj`, function(obj){
