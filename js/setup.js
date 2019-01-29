@@ -23,7 +23,14 @@ class Base {
 }
 
 function getPlayerBases(board, totalPlayers = 3){
-  const playerColors = ['#27ae60', '#2980b9', '#8e44ad', '#c0392b', '#f1c40f', '#e67e22'];
+  const playerColors = [
+      'rgba(52, 152, 219,1.0)', // Blue
+      'rgba(231, 76, 60,1.0)',  // Red
+      'rgba(46, 204, 113,1.0)', // Green
+      'rgba(241, 196, 15,1.0)', // Yellow
+      'rgba(155, 89, 182,1.0)', // Purple
+      'rgba(243, 156, 18,1.0)', // Orange
+    ];
   let players = [];
 
   totalPlayers = +totalPlayers < 1 || +totalPlayers > 6 ? 3 : +totalPlayers;
