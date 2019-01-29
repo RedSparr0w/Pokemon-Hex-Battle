@@ -96,6 +96,8 @@
       }
       else {
         movingPiece = obj;
+        // Move camera to objects position
+        scene.controls.target = obj.position;
       }
     }, this);
 
