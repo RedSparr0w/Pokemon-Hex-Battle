@@ -78,6 +78,10 @@ Model.prototype = {
     this.obj.rotation.y = this.rotation;
     this.obj.heightOffset = this.heightOffset;
     this.obj.highlight = this.highlight
+    this.obj.traverse(function(child) {
+      if (child instanceof THREE.Mesh)
+        child.material.specular.set('#000');
+    });
     this.obj.select = function(){
       obj = this;
       obj.traverse(function(child) {
