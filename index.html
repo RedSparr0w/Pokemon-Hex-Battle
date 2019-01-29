@@ -55,9 +55,9 @@
     };
 
     players.forEach((player)=>{
-      player.base.model = new Model({...modelConfig, ...{rotation: player.rotation, tile: player.base, url: './obj/substitute doll/Substitute Doll'}});
+      player.base.model = new Model({...modelConfig, ...{highlight: player.color, rotation: player.rotation, tile: player.base, url: './obj/substitute doll/Substitute Doll'}});
       board.grid.getNeighbors(player.base.cell).forEach((cell, i)=>{
-        player.pokemons.push(new pokemonModel({...modelConfig, ...{rotation: player.rotation, tile: cell.tile}}, (i == 0 ? 'Bulbasaur' : i == 1 ? 'Charmander' : 'Squirtle')));
+        player.pokemons.push(new pokemonModel({...modelConfig, ...{highlight: player.color, rotation: player.rotation, tile: cell.tile}}, (i == 0 ? 'Bulbasaur' : i == 1 ? 'Charmander' : 'Squirtle')));
       });
 
       player.base.model.addToScene();
