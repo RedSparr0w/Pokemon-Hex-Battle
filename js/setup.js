@@ -99,16 +99,16 @@ function setupBoard(boardSize, totalPlayers = 3, cellSize = 10){
   // setup the thing
   const scene = new vg.Scene({
     element: document.getElementById('view'),
-    cameraPosition: {x:0, y:150, z:150}
+    cameraPosition: {x:0, y:150, z:150},
   }, true);
 
   /* Setup the scene */
   // maximum angle the camera can move down
-  scene.controls.maxPolarAngle = 1.4
+  scene.controls.maxPolarAngle = 1.4;
   // closest zoom to object
   scene.controls.minDistance = 50;
   // brightness of the light source
-  scene.container.children[1].intensity = 0.5
+  scene.container.children[1].intensity = 0.5;
 
   // this constructs the cells in grid coordinate space
   const grid = new vg.HexGrid({
