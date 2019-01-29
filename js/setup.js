@@ -88,29 +88,29 @@ function getPlayerBases(board, totalPlayers = 3){
 }
 
 function setupBoard(boardSize, totalPlayers = 3, cellSize = 10){
-	// setup the thing
-	const scene = new vg.Scene({
-		element: document.getElementById('view'),
-		cameraPosition: {x:0, y:150, z:150}
-	}, true);
+  // setup the thing
+  const scene = new vg.Scene({
+    element: document.getElementById('view'),
+    cameraPosition: {x:0, y:150, z:150}
+  }, true);
 
-	// this constructs the cells in grid coordinate space
-	const grid = new vg.HexGrid({
-		cellSize, // size of individual cells
-	});
+  // this constructs the cells in grid coordinate space
+  const grid = new vg.HexGrid({
+    cellSize, // size of individual cells
+  });
 
-	grid.generate({
-		size: boardSize, // size of the board
-	});
+  grid.generate({
+    size: boardSize, // size of the board
+  });
 
-	const mouse = new vg.MouseCaster(scene.container, scene.camera);
-	const selector = new vg.SelectionManager(mouse);
-	const board = new vg.Board(grid);
+  const mouse = new vg.MouseCaster(scene.container, scene.camera);
+  const selector = new vg.SelectionManager(mouse);
+  const board = new vg.Board(grid);
 
-	board.generateTilemap();
+  board.generateTilemap();
 
-	scene.add(board.group);
-	scene.focusOn(board.group);
+  scene.add(board.group);
+  scene.focusOn(board.group);
 
   const players = getPlayerBases(board, totalPlayers);
 

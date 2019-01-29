@@ -1,42 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-	<meta name="author" content="Corey Birnbaum" />
-	<title>Grid</title>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="author" content="Corey Birnbaum" />
+  <title>Grid</title>
 
-	<link href="css/normalize.css" rel="stylesheet" type="text/css"/>
-	<style>
-		body {
-			overflow: hidden;
-		}
-		#view {
-			position: absolute;
-			top: 0;
-			left: 0;
-		}
-	</style>
+  <link href="css/normalize.css" rel="stylesheet" type="text/css"/>
+  <style>
+    body {
+      overflow: hidden;
+    }
+    #view {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  </style>
 </head>
 
 <body>
 
-	<div id="view"></div>
+  <div id="view"></div>
 
-	<script type="text/javascript" src="js/three.min.js"></script>
-	<script type="text/javascript" src="js/OrbitControls.js"></script>
-	<script type="text/javascript" src="js/hex-grid.min.js"></script>
-	<script type="text/javascript" src="js/Model.js"></script>
-	<script type="text/javascript" src="js/OBJLoader.js"></script>
-	<script type="text/javascript" src="js/MTLLoader.js"></script>
-	<script type="text/javascript" src="js/query.js"></script>
-	<script type="text/javascript" src="js/setup.js"></script>
-	<script type="text/javascript">
-	const boardSize = +getQueryParam('size') || +getQueryParam('boardSize') || 8;
-	const totalPlayers = +getQueryParam('players') || +getQueryParam('totalPlayers') || 3;
+  <script type="text/javascript" src="js/three.min.js"></script>
+  <script type="text/javascript" src="js/OrbitControls.js"></script>
+  <script type="text/javascript" src="js/hex-grid.min.js"></script>
+  <script type="text/javascript" src="js/Model.js"></script>
+  <script type="text/javascript" src="js/OBJLoader.js"></script>
+  <script type="text/javascript" src="js/MTLLoader.js"></script>
+  <script type="text/javascript" src="js/query.js"></script>
+  <script type="text/javascript" src="js/setup.js"></script>
+  <script type="text/javascript">
+  const boardSize = +getQueryParam('size') || +getQueryParam('boardSize') || 8;
+  const totalPlayers = +getQueryParam('players') || +getQueryParam('totalPlayers') || 3;
 
-	let {
+  let {
       scene,
       grid,
       mouse,
@@ -45,74 +45,74 @@
       players,
     } = setupBoard(boardSize, totalPlayers);
 
-		window.board = board;
-		// populate the board
-		var pokemons = [], bases = [];
-		var modelConfig = {
-			container: board.group,
-			scale: 3,
-			heightOffset: 0.5,
-		};
+    window.board = board;
+    // populate the board
+    var pokemons = [], bases = [];
+    var modelConfig = {
+      container: board.group,
+      scale: 3,
+      heightOffset: 0.5,
+    };
 
-		players.forEach((player)=>{
-			bases.push(new Model({...modelConfig, ...{rotation: player.rotation, tile: player.base, url: './obj/substitute doll/000 - Substitute Doll'}}));
-			board.grid.getNeighbors(player.base.cell).forEach((cell, i)=>{
-				pokemons.push(new pokemonModel({...modelConfig, ...{rotation: player.rotation, tile: cell.tile}}, (i == 0 ? 'Bulbasaur' : i == 1 ? 'Charmander' : 'Squirtle')));
-			});
-		});
-		[...bases, ...pokemons].forEach((obj)=>{
-			obj.addToScene();
-		})
+    players.forEach((player)=>{
+      bases.push(new Model({...modelConfig, ...{rotation: player.rotation, tile: player.base, url: './obj/substitute doll/000 - Substitute Doll'}}));
+      board.grid.getNeighbors(player.base.cell).forEach((cell, i)=>{
+        pokemons.push(new pokemonModel({...modelConfig, ...{rotation: player.rotation, tile: cell.tile}}, (i == 0 ? 'Bulbasaur' : i == 1 ? 'Charmander' : 'Squirtle')));
+      });
+    });
+    [...bases, ...pokemons].forEach((obj)=>{
+      obj.addToScene();
+    })
 
-		// keep track of states
-		var currentPiece = 0;
-		var movingPiece = null;
+    // keep track of states
+    var currentPiece = 0;
+    var movingPiece = null;
 
-		// handle interaction
-		selector.onSelect.add(function(obj) {
-			if (obj.objectType === vg.TILE) {
-				// select the sprite if one was already there
-				var e = obj.entity;
-				console.log(obj);
-				console.log(e);
-				if (e) {
-					selector.select(e, false); // don't fire the signal when firing manually or you'll cause a stack overflow with recursion
-					movingPiece = e; // new move
-				}
-				else {
-					if (movingPiece) {
-						moveEntityToCell(obj);
-						return;
-					}
-					// cycle through the pokemons, placing them on the clicked tile
-					var p = pokemons[currentPiece++].obj;
-					if (currentPiece === pokemons.length) {
-						currentPiece = 0;
-					}
-					board.setEntityOnTile(p, obj);
-				}
-			}
-			else {
-				movingPiece = obj;
-			}
-		}, this);
+    // handle interaction
+    selector.onSelect.add(function(obj) {
+      if (obj.objectType === vg.TILE) {
+        // select the sprite if one was already there
+        var e = obj.entity;
+        console.log(obj);
+        console.log(e);
+        if (e) {
+          selector.select(e, false); // don't fire the signal when firing manually or you'll cause a stack overflow with recursion
+          movingPiece = e; // new move
+        }
+        else {
+          if (movingPiece) {
+            moveEntityToCell(obj);
+            return;
+          }
+          // cycle through the pokemons, placing them on the clicked tile
+          var p = pokemons[currentPiece++].obj;
+          if (currentPiece === pokemons.length) {
+            currentPiece = 0;
+          }
+          board.setEntityOnTile(p, obj);
+        }
+      }
+      else {
+        movingPiece = obj;
+      }
+    }, this);
 
-		/*selector.onDeselect.add(function(obj) {
+    /*selector.onDeselect.add(function(obj) {
 
-		}, this);*/
+    }, this);*/
 
-		function moveEntityToCell(tile) {
-			board.setEntityOnTile(movingPiece, tile);
-			movingPiece = null;
-		}
+    function moveEntityToCell(tile) {
+      board.setEntityOnTile(movingPiece, tile);
+      movingPiece = null;
+    }
 
-		// start the thing
-		update();
-		function update() {
-			mouse.update();
-			scene.render();
-			requestAnimationFrame(update);
-		}
-	</script>
+    // start the thing
+    update();
+    function update() {
+      mouse.update();
+      scene.render();
+      requestAnimationFrame(update);
+    }
+  </script>
 </body>
 </html>
