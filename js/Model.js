@@ -71,22 +71,6 @@ const Model = function(settings){
 
 
 Model.prototype = {
-  getMaterial: function() {
-    this.active = true;
-    this.view.visible = true;
-    this.position.set(x || 0, y || 0, z || 0);
-    this.container.add(this.view);
-  },
-  getObject: function() {
-    return new Promise(resolve => {
-      console.log(url)
-      new THREE.OBJLoader()
-        .setMaterials( material )
-        .load( `${url}.obj`, function(obj){
-          resolve(obj);
-        });
-    });
-  },
   addToScene: async function() {
     this.material = await getMTL(this.url);
     this.obj = await getOBJ(this.url, this.material);
