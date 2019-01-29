@@ -55,18 +55,21 @@
     };
 
     players.forEach((player)=>{
-      bases.push(new Model({...modelConfig, ...{rotation: player.rotation, tile: player.base, url: './obj/substitute doll/Substitute Doll'}}));
+      player.base.model = new Model({...modelConfig, ...{rotation: player.rotation, tile: player.base, url: './obj/substitute doll/Substitute Doll'}});
       board.grid.getNeighbors(player.base.cell).forEach((cell, i)=>{
-        pokemons.push(new pokemonModel({...modelConfig, ...{rotation: player.rotation, tile: cell.tile}}, (i == 0 ? 'Bulbasaur' : i == 1 ? 'Charmander' : 'Squirtle')));
+        player.pokemons.push(new pokemonModel({...modelConfig, ...{rotation: player.rotation, tile: cell.tile}}, (i == 0 ? 'Bulbasaur' : i == 1 ? 'Charmander' : 'Squirtle')));
+      });
+
+      player.base.model.addToScene();
+      player.pokemons.forEach((obj)=>{
+        obj.addToScene();
       });
     });
-    [...bases, ...pokemons].forEach((obj)=>{
-      obj.addToScene();
-    })
 
     // keep track of states
-    var currentPiece = 0;
-    var movingPiece = null;
+    let currentPlayer = 0;
+    let currentPiece = 0;
+    let movingPiece = null;
 
     // handle interaction
     selector.onSelect.add(function(obj) {
@@ -83,9 +86,10 @@
             return;
           }
           // cycle through the pokemons, placing them on the clicked tile
-          var p = pokemons[currentPiece++].obj;
-          if (currentPiece === pokemons.length) {
+          var p = players[currentPlayer].pokemons[currentPiece++].obj;
+          if (currentPiece === players[currentPlayer].pokemons.length) {
             currentPiece = 0;
+            currentPlayer = ++currentPlayer % players.length;
           }
           board.setEntityOnTile(p, obj);
         }

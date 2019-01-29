@@ -18,6 +18,7 @@ class Base {
   constructor(base, point) {
     this.base = base;
     this.rotation = ((360 / 6) * (6 - point)) * vg.DEG_TO_RAD;
+    this.pokemons = [];
   }
 }
 
