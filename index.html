@@ -34,31 +34,16 @@
 	<script type="text/javascript" src="js/setup.js"></script>
 	<script type="text/javascript">
 	const boardSize = +getQueryParam('size') || +getQueryParam('boardSize') || 8;
-	const players = +getQueryParam('players') || 3;
+	const totalPlayers = +getQueryParam('players') || +getQueryParam('totalPlayers') || 3;
 
-		// setup the thing
-		var scene = new vg.Scene({
-			element: document.getElementById('view'),
-			cameraPosition: {x:0, y:150, z:150}
-		}, true);
-
-		// this constructs the cells in grid coordinate space
-		var grid = new vg.HexGrid({
-			cellSize: 11 // size of individual cells
-		});
-
-		grid.generate({
-			size: boardSize // size of the board
-		});
-
-		var mouse = new vg.MouseCaster(scene.container, scene.camera);
-		var selector = new vg.SelectionManager(mouse);
-		var board = new vg.Board(grid);
-
-		board.generateTilemap();
-
-		scene.add(board.group);
-		scene.focusOn(board.group);
+	let {
+      scene,
+      grid,
+      mouse,
+      selector,
+      board,
+      players,
+    } = setupBoard(boardSize, totalPlayers);
 
 		window.board = board;
 		// populate the board
@@ -68,8 +53,8 @@
 			scale: 3,
 			heightOffset: 0.5,
 		};
-		var playerObj = getPlayerBases();
-		playerObj.forEach((player)=>{
+
+		players.forEach((player)=>{
 			bases.push(new Model({...modelConfig, ...{rotation: player.rotation, tile: player.base, url: './obj/substitute doll/000 - Substitute Doll'}}));
 			board.grid.getNeighbors(player.base.cell).forEach((cell, i)=>{
 				pokemons.push(new pokemonModel({...modelConfig, ...{rotation: player.rotation, tile: cell.tile}}, (i == 0 ? 'Bulbasaur' : i == 1 ? 'Charmander' : 'Squirtle')));
