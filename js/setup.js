@@ -122,6 +122,7 @@ function setupBoard(boardSize, totalPlayers = 3, cellSize = 10){
   const board = new vg.Board(grid);
 
   board.generateTilemap();
+  board.generateOverlay(boardSize + 2);
 
   scene.add(board.group);
   scene.focusOn(board.group);
