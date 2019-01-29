@@ -55,7 +55,7 @@
     };
 
     players.forEach((player)=>{
-      bases.push(new Model({...modelConfig, ...{rotation: player.rotation, tile: player.base, url: './obj/substitute doll/000 - Substitute Doll'}}));
+      bases.push(new Model({...modelConfig, ...{rotation: player.rotation, tile: player.base, url: './obj/substitute doll/Substitute Doll'}}));
       board.grid.getNeighbors(player.base.cell).forEach((cell, i)=>{
         pokemons.push(new pokemonModel({...modelConfig, ...{rotation: player.rotation, tile: cell.tile}}, (i == 0 ? 'Bulbasaur' : i == 1 ? 'Charmander' : 'Squirtle')));
       });
