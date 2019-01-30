@@ -33,6 +33,29 @@
 
   <div id="view"></div>
   <div id="controls" class="container text-light text-center">
+    <h2 id="player_name">Player 1</h2>
+    <h4 id="player_bank">$50</h4>
+    <table class="table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Count</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>Territory</th>
+          <td id="player_territory">4</td>
+          <td id="player_income">$40</td>
+        </tr>
+        <tr>
+          <th>Units</th>
+          <td id="player_units">3</td>
+          <td id="player_upkeep">-$60</td>
+        </tr>
+      </tbody>
+    </table>
     <button id="end-turn" class="btn btn-block btn-light" onclick="nextPlayersTurn()">End Turn</button>
   </div>
 
@@ -58,6 +81,26 @@
     g = (+g).toString(16).padStart(2,0);
     b = (+b).toString(16).padStart(2,0);
     return `#${r}${g}${b}`
+  }
+
+  function nextPlayersTurn(){
+    currentPlayer = ++currentPlayer % players.length;
+
+    let territory = board.tiles.filter((obj)=>{
+      return obj.team == currentPlayer;
+    });
+
+    players[currentPlayer].bank += territory.length * 10;
+    players[currentPlayer].bank -= players[currentPlayer].pokemons.length * 20;
+
+    document.getElementById('player_name').innerText = players[currentPlayer].name || `Player ${currentPlayer + 1}`;
+    document.getElementById('player_bank').innerText = '$' + players[currentPlayer].bank.toLocaleString();
+    document.getElementById('player_units').innerText = players[currentPlayer].pokemons.length;
+    document.getElementById('player_upkeep').innerText = '-$' + (players[currentPlayer].pokemons.length * 20).toLocaleString();
+    document.getElementById('player_territory').innerText = territory.length;
+    document.getElementById('player_income').innerText = '$' + (territory.length * 10).toLocaleString();
+
+    scene.controls.target = players[currentPlayer].base.position
   }
 
   vg.Tile.prototype.select = function() {
@@ -113,6 +156,7 @@
         obj.addToScene();
         obj.tile.select();
       });
+      nextPlayersTurn();
     });
 
     /*
