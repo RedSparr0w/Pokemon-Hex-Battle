@@ -45,13 +45,12 @@
   <script type="text/javascript" src="js/query.js"></script>
   <script type="text/javascript" src="js/setup.js"></script>
   <script type="text/javascript">
-  vg.Tile.prototype.select = function() {
-    if (this.material.emissive)
-      this.material.emissive.setHex(this.highlight);
-    this.selected = !0;
-  };
   const boardSize = +getQueryParam('size') || +getQueryParam('boardSize') || 8;
   const totalPlayers = +getQueryParam('players') || +getQueryParam('totalPlayers') || 3;
+  // keep track of states
+  let currentPlayer = 0,
+      currentPiece = 0,
+      movingPiece = null;
 
   function rgbToHex(rgb){
     let [r, g, b] = rgb.match(/(\d+)/g);
@@ -60,6 +59,14 @@
     b = (+b).toString(16).padStart(2,0);
     return `#${r}${g}${b}`
   }
+
+  vg.Tile.prototype.select = function() {
+    if (this.material.emissive)
+      this.material.emissive.set(players[currentPlayer].color);
+    this.team = currentPlayer;
+		this.selected = true;
+		return this;
+  };
 
   let {
       scene,
@@ -93,19 +100,12 @@
       });
 
       player.base.model.addToScene();
-      player.base.highlight = rgbToHex(player.color).replace('#', '0x');
       player.base.select();
       player.pokemons.forEach((obj)=>{
         obj.addToScene();
-        obj.tile.highlight = rgbToHex(player.color).replace('#', '0x');
         obj.tile.select();
       });
     });
-
-    // keep track of states
-    let currentPlayer = 0;
-    let currentPiece = 0;
-    let movingPiece = null;
 
     /*
     // handle interaction
