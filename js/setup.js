@@ -89,6 +89,7 @@ function getPlayerBases(board, totalPlayers = 3){
   // Apply colors
   players.map((player, index)=>{
     player.color = playerColors[index];
+    player.bank = 70;
     return player;
   });
 
