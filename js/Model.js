@@ -61,7 +61,8 @@ const Model = function(settings){
   // other objects like the SelectionManager expect these on all objects that are added to the scene
   this.active = false;
   this.uniqueId = vg.Tools.generateID();
-  this.objectType = vg.ENT;
+  this.objectType = 'Model';
+
 
   // sanity checks
   if (!this.url) {
@@ -78,9 +79,12 @@ Model.prototype = {
     this.obj.rotation.y = this.rotation;
     this.obj.heightOffset = this.heightOffset;
     this.obj.highlight = this.highlight
+    let structure = this;
     this.obj.traverse(function(child) {
-      if (child instanceof THREE.Mesh)
+      if (child instanceof THREE.Mesh){
         child.material.specular.set('#000');
+        child.userData.structure = structure;
+      }
     });
     this.obj.select = function(){
       obj = this;

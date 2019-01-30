@@ -138,9 +138,12 @@
 
     var vec = new THREE.Vector3();
 
-    mouse.signal.add(function(evt, tile) {
+    mouse.signal.add(function(evt, obj) {
       if (evt === vg.MouseCaster.CLICK) {
-        tile.toggle();
+        if (obj.objectType === vg.TILE)
+          return obj.toggle();
+        if (obj.objectType === 'Model')
+          obj.select();
       }
     }, window);
 
