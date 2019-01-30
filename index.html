@@ -64,8 +64,16 @@
     if (this.material.emissive)
       this.material.emissive.set(players[currentPlayer].color);
     this.team = currentPlayer;
-		this.selected = true;
-		return this;
+    this.selected = true;
+    return this;
+  };
+
+  vg.Tile.prototype.deselect = function() {
+    if (this._emissive !== null && this.material.emissive)
+      this.material.emissive.setHex(this._emissive);
+    this.team = undefined;
+    this.selected = false;
+    return this;
   };
 
   let {
