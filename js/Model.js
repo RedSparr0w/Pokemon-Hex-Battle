@@ -78,7 +78,6 @@ Model.prototype = {
     this.obj.scale.set(this.scale, this.scale, this.scale);
     this.obj.rotation.y = this.rotation;
     this.obj.heightOffset = this.heightOffset;
-    this.obj.highlight = this.highlight
     let structure = this;
     this.obj.traverse(function(child) {
       if (child instanceof THREE.Mesh){
@@ -86,21 +85,20 @@ Model.prototype = {
         child.userData.structure = structure;
       }
     });
-    this.obj.select = function(){
-      obj = this;
-      obj.traverse(function(child) {
-        if (child instanceof THREE.Mesh)
-          child.material.color.set(obj.highlight);
-      });
-    };
-    this.obj.deselect = function(){
-      obj = this;
-      obj.traverse(function(child) {
-        if (child instanceof THREE.Mesh)
-          child.material.color.set('rgb(255,255,255)');
-      });
-    };
     this.container.add(this.obj);
     board.setEntityOnTile(this.obj, this.tile || board.getRandomTile());
+  },
+  select: function(){
+    highlight = this.highlight;
+    this.obj.traverse(function(child) {
+      if (child instanceof THREE.Mesh)
+        child.material.color.set(highlight);
+    });
+  },
+  deselect: function(){
+    this.obj.traverse(function(child) {
+      if (child instanceof THREE.Mesh)
+        child.material.color.set('rgb(255,255,255)');
+    });
   },
 }

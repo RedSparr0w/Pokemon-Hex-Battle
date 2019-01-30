@@ -122,6 +122,7 @@
   let {
       scene,
       grid,
+      selector,
       mouse,
       board,
       players,
@@ -136,6 +137,7 @@
       heightOffset: 0.5,
     };
 
+    /*
     var vec = new THREE.Vector3();
 
     mouse.signal.add(function(evt, obj) {
@@ -146,6 +148,7 @@
           obj.select();
       }
     }, window);
+    */
 
     players.forEach((player)=>{
       player.base.model = new Model({...modelConfig, ...{highlight: player.color, rotation: player.rotation, tile: player.base, url: './obj/substitute doll/Substitute Doll'}});
@@ -162,7 +165,7 @@
       nextPlayersTurn();
     });
 
-    /*
+
     // handle interaction
     selector.onSelect.add(function(obj) {
       if (obj.objectType === vg.TILE) {
@@ -187,12 +190,12 @@
         }
       }
       else {
-        movingPiece = obj;
+        movingPiece = obj.obj;
         // Move camera to objects position
-        scene.controls.target = obj.position;
+        //scene.controls.target = obj.obj.position;
       }
     }, this);
-    */
+
     /*selector.onDeselect.add(function(obj) {
 
     }, this);*/

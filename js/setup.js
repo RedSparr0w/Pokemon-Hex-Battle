@@ -122,7 +122,7 @@ function setupBoard(boardSize, totalPlayers = 3, cellSize = 10){
   });
 
   const mouse = new vg.MouseCaster(scene.container, scene.camera, document.getElementById('view'));
-  const selector = null//new vg.SelectionManager(mouse);
+  const selector = new vg.SelectionManager(mouse);
   const board = new vg.Board(grid);
 
   board.generateTilemap();
