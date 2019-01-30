@@ -120,7 +120,7 @@ function setupBoard(boardSize, totalPlayers = 3, cellSize = 10){
     size: boardSize, // size of the board
   });
 
-  const mouse = new vg.MouseCaster(scene.container, scene.camera);
+  const mouse = new vg.MouseCaster(scene.container, scene.camera, document.getElementById('view'));
   const selector = null//new vg.SelectionManager(mouse);
   const board = new vg.Board(grid);
 
