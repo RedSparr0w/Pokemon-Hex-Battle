@@ -85,6 +85,20 @@ Model.prototype = {
         child.userData.structure = structure;
       }
     });
+    let highlight = this.highlight;
+    this.obj.select = function(){
+      this.traverse(function(child) {
+        if (child instanceof THREE.Mesh)
+          child.material.color.set(highlight);
+      });
+    };
+    this.obj.deselect = function(){
+      this.traverse(function(child) {
+        if (child instanceof THREE.Mesh)
+          child.material.color.set('rgb(255,255,255)');
+      });
+    };
+
     this.container.add(this.obj);
     board.setEntityOnTile(this.obj, this.tile || board.getRandomTile());
   },
