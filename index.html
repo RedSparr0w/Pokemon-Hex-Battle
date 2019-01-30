@@ -17,12 +17,18 @@
       top: 0;
       left: 0;
     }
+    #controls {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    }
   </style>
 </head>
 
 <body>
 
   <div id="view"></div>
+  <div id="controls"><button id="end-turn" onclick="currentPlayer = ++currentPlayer % players.length; scene.controls.target = players[currentPlayer].pokemons[0].obj.position; selector.select(players[currentPlayer].pokemons[0].obj, false);">End Turn</button></div>
 
   <script type="text/javascript" src="js/three.min.js"></script>
   <script type="text/javascript" src="js/OrbitControls.js"></script>
@@ -33,14 +39,26 @@
   <script type="text/javascript" src="js/query.js"></script>
   <script type="text/javascript" src="js/setup.js"></script>
   <script type="text/javascript">
+  vg.Tile.prototype.select = function() {
+    if (this.material.emissive)
+      this.material.emissive.setHex(this.highlight);
+    this.selected = !0;
+  };
   const boardSize = +getQueryParam('size') || +getQueryParam('boardSize') || 8;
   const totalPlayers = +getQueryParam('players') || +getQueryParam('totalPlayers') || 3;
+
+  function rgbToHex(rgb){
+    let [r, g, b] = rgb.match(/(\d+)/g);
+    r = (+r).toString(16).padStart(2,0);
+    g = (+g).toString(16).padStart(2,0);
+    b = (+b).toString(16).padStart(2,0);
+    return `#${r}${g}${b}`
+  }
 
   let {
       scene,
       grid,
       mouse,
-      selector,
       board,
       players,
     } = setupBoard(boardSize, totalPlayers);
@@ -54,6 +72,14 @@
       heightOffset: 0.5,
     };
 
+    var vec = new THREE.Vector3();
+
+    mouse.signal.add(function(evt, tile) {
+      if (evt === vg.MouseCaster.CLICK) {
+        tile.toggle();
+      }
+    }, window);
+
     players.forEach((player)=>{
       player.base.model = new Model({...modelConfig, ...{highlight: player.color, rotation: player.rotation, tile: player.base, url: './obj/substitute doll/Substitute Doll'}});
       board.grid.getNeighbors(player.base.cell).forEach((cell, i)=>{
@@ -61,8 +87,12 @@
       });
 
       player.base.model.addToScene();
+      player.base.highlight = rgbToHex(player.color).replace('#', '0x');
+      player.base.select();
       player.pokemons.forEach((obj)=>{
         obj.addToScene();
+        obj.tile.highlight = rgbToHex(player.color).replace('#', '0x');
+        obj.tile.select();
       });
     });
 
@@ -71,6 +101,7 @@
     let currentPiece = 0;
     let movingPiece = null;
 
+    /*
     // handle interaction
     selector.onSelect.add(function(obj) {
       if (obj.objectType === vg.TILE) {
@@ -89,7 +120,7 @@
           var p = players[currentPlayer].pokemons[currentPiece++].obj;
           if (currentPiece === players[currentPlayer].pokemons.length) {
             currentPiece = 0;
-            currentPlayer = ++currentPlayer % players.length;
+            //currentPlayer = ++currentPlayer % players.length;
           }
           board.setEntityOnTile(p, obj);
         }
@@ -100,7 +131,7 @@
         scene.controls.target = obj.position;
       }
     }, this);
-
+    */
     /*selector.onDeselect.add(function(obj) {
 
     }, this);*/

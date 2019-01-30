@@ -100,6 +100,7 @@ function setupBoard(boardSize, totalPlayers = 3, cellSize = 10){
   const scene = new vg.Scene({
     element: document.getElementById('view'),
     cameraPosition: {x:0, y:150, z:150},
+    width: window.innerWidth - 100,
   }, true);
 
   /* Setup the scene */
@@ -120,11 +121,11 @@ function setupBoard(boardSize, totalPlayers = 3, cellSize = 10){
   });
 
   const mouse = new vg.MouseCaster(scene.container, scene.camera);
-  const selector = new vg.SelectionManager(mouse);
+  const selector = null//new vg.SelectionManager(mouse);
   const board = new vg.Board(grid);
 
   board.generateTilemap();
-  board.generateOverlay(boardSize + 2);
+  board.generateOverlay(boardSize + 3);
 
   scene.add(board.group);
   scene.focusOn(board.group);
