@@ -22,50 +22,48 @@ function getOBJ(url, material){
   });
 }
 
-const Model = function(settings){
-  // Default config options
-  var config = {
-    material: null,
-    url: null,
-    container: null,
-    texture: null,
-    scale: 3,
-    highlight: 'rgb(0, 168, 228)',
-    heightOffset: 0.5, // how high off the board this object sits
-    obstacle: false,
-    tile: false,
-    rotation: 0,
-  };
-  // attribute override
-  config = vg.Tools.merge(config, settings);
+class Model {
+  constructor(settings){
+    // Default config options
+    var config = {
+      material: null,
+      url: null,
+      container: null,
+      texture: null,
+      scale: 3,
+      highlight: 'rgb(0, 168, 228)',
+      heightOffset: 0.5, // how high off the board this object sits
+      obstacle: false,
+      tile: false,
+      rotation: 0,
+    };
+    // attribute override
+    config = vg.Tools.merge(config, settings);
 
-  this.material = config.material;
-  this.geo = config.geo;
-  this.url = config.url;
-  this.container = config.container;
-  this.texture = config.texture;
-  this.scale = config.scale;
-  this.highlight = config.highlight;
-  this.heightOffset = config.heightOffset;
-  this.obstacle = config.obstacle;
-  this.tile = config.tile;
-  this.rotation = config.rotation;
+    this.material = config.material;
+    this.geo = config.geo;
+    this.url = config.url;
+    this.container = config.container;
+    this.texture = config.texture;
+    this.scale = config.scale;
+    this.highlight = config.highlight;
+    this.heightOffset = config.heightOffset;
+    this.obstacle = config.obstacle;
+    this.tile = config.tile;
+    this.rotation = config.rotation;
 
-  // other objects like the SelectionManager expect these on all objects that are added to the scene
-  this.active = false;
-  this.uniqueId = vg.Tools.generateID();
-  this.objectType = 'Model';
+    // other objects like the SelectionManager expect these on all objects that are added to the scene
+    this.active = false;
+    this.uniqueId = vg.Tools.generateID();
+    this.objectType = 'Model';
 
 
-  // sanity checks
-  if (!this.url) {
-    console.error('[Model] Must provide a .mtl file');
+    // sanity checks
+    if (!this.url) {
+      console.error('[Model] Must provide a .mtl file');
+    }
   }
-}
-
-
-Model.prototype = {
-  addToScene: async function() {
+  async addToScene() {
     this.material = await getMTL(this.url);
     this.obj = await getOBJ(this.url, this.material);
     this.obj.scale.set(this.scale, this.scale, this.scale);
@@ -94,18 +92,18 @@ Model.prototype = {
 
     this.container.add(this.obj);
     board.setEntityOnTile(this.obj, this.tile || board.getRandomTile());
-  },
-  select: function(){
+  }
+  select(){
     highlight = this.highlight;
     this.obj.traverse(function(child) {
       if (child instanceof THREE.Mesh)
         child.material.color.set(highlight);
     });
-  },
-  deselect: function(){
+  }
+  deselect(){
     this.obj.traverse(function(child) {
       if (child instanceof THREE.Mesh)
         child.material.color.set('rgb(255,255,255)');
     });
-  },
+  }
 }
