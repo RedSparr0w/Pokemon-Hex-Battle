@@ -65,8 +65,10 @@ class Model {
   }
 
   async init(){
-    this.material = await getMTL(this.url);
-    this.obj = await getOBJ(this.url, this.material);
+    if (!this.material)
+      this.material = await getMTL(this.url);
+    if (!this.obj)
+      this.obj = await getOBJ(this.url, this.material);
     this.obj.scale.set(this.scale, this.scale, this.scale);
     this.obj.rotation.y = this.rotation;
     this.obj.heightOffset = this.heightOffset;

@@ -5,6 +5,8 @@ class Pokemon extends Model {
     shiny = !!( shiny != undefined ? shiny : Math.random() < 0.1 ); /* 10 percent chance, will lower this later.. maybe */
     settings.url = `./obj/${pokemon.toLowerCase()}/${allPokemon[pokemon].dex} - ${pokemon}${shiny ? ' - Shiny' : ''}`;
     super(settings);
+    this.material = allPokemon[pokemon].material;
+    this.obj = allPokemon[pokemon].model.clone();
     this.objectType = 'Pokemon';
   }
   select(){
@@ -21,3 +23,14 @@ class Pokemon extends Model {
     });
   }
 }
+
+function generatePokemonUrl(pokemon = 'Bulbasaur', shiny){
+  shiny = !!( shiny != undefined ? shiny : Math.random() < 0.1 ); /* 10 percent chance, will lower this later.. maybe */
+  return `/obj/${pokemon.toLowerCase()}/${allPokemon[pokemon].dex} - ${pokemon}${shiny ? ' - Shiny' : ''}`;
+}
+
+Object.keys(allPokemon).forEach(async (pokemon)=>{
+  let url = generatePokemonUrl(pokemon, false);
+  allPokemon[pokemon].material = await getMTL(url);
+  allPokemon[pokemon].model = await getOBJ(url, allPokemon[pokemon].material);
+});
