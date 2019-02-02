@@ -96,7 +96,7 @@ function getPlayerBases(board, totalPlayers = 3){
   return players;
 }
 
-function setupBoard(boardSize, totalPlayers = 3, cellSize = 10){
+function setupBoard({boardSize = 8, totalPlayers = 3, cellSize = 10} = {}){
   // setup the thing
   const scene = new vg.Scene({
     element: document.getElementById('view'),
