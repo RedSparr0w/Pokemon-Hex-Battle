@@ -63,7 +63,8 @@ class Model {
       console.error('[Model] Must provide a .mtl file');
     }
   }
-  async addToScene() {
+
+  async init(){
     this.material = await getMTL(this.url);
     this.obj = await getOBJ(this.url, this.material);
     this.obj.scale.set(this.scale, this.scale, this.scale);
@@ -77,33 +78,19 @@ class Model {
       }
     });
     let highlight = this.highlight;
-    this.obj.select = function(){
-      this.traverse(function(child) {
-        if (child instanceof THREE.Mesh)
-          child.material.color.set(highlight);
-      });
-    };
-    this.obj.deselect = function(){
-      this.traverse(function(child) {
-        if (child instanceof THREE.Mesh)
-          child.material.color.set('rgb(255,255,255)');
-      });
-    };
-
-    this.container.add(this.obj);
-    board.setEntityOnTile(this.obj, this.tile || board.getRandomTile());
+    this.obj.select = ()=>{this.select()};
+    this.obj.deselect = ()=>{this.deselect()};
   }
+
+  addToScene(tile) {
+    this.container.add(this.obj);
+    board.setEntityOnTile(this.obj, tile || board.getRandomTile());
+  }
+  // When clicked/selected
   select(){
-    highlight = this.highlight;
-    this.obj.traverse(function(child) {
-      if (child instanceof THREE.Mesh)
-        child.material.color.set(highlight);
-    });
+    console.debug(`You selected a model`);
   }
   deselect(){
-    this.obj.traverse(function(child) {
-      if (child instanceof THREE.Mesh)
-        child.material.color.set('rgb(255,255,255)');
-    });
+    console.debug(`Deselected model`);
   }
 }

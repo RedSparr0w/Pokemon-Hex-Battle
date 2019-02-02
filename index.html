@@ -138,30 +138,16 @@
     heightOffset: 0.5,
   };
 
-  /*
-  var vec = new THREE.Vector3();
+  players.forEach(async (player, playerIndex)=>{
+    player.base.model = new Model({...modelConfig, ...{highlight: player.color, rotation: player.rotation, url: './obj/substitute doll/Substitute Doll'}});
+    await player.base.model.init();
+    player.base.model.addToScene(player.base);
 
-  mouse.signal.add(function(evt, obj) {
-    if (evt === vg.MouseCaster.CLICK) {
-      if (obj.objectType === vg.TILE)
-        return obj.toggle();
-      if (obj.objectType === 'Model')
-        obj.select();
-    }
-  }, window);
-  */
-
-  players.forEach((player)=>{
-    player.base.model = new Model({...modelConfig, ...{highlight: player.color, rotation: player.rotation, tile: player.base, url: './obj/substitute doll/Substitute Doll'}});
-    board.grid.getNeighbors(player.base.cell).forEach((cell, i)=>{
-      player.pokemons.push(new pokemonModel({...modelConfig, ...{highlight: player.color, rotation: player.rotation, tile: cell.tile}}, (i == 0 ? 'Bulbasaur' : i == 1 ? 'Charmander' : 'Squirtle')));
-    });
-
-    player.base.model.addToScene();
-    player.base.select();
-    player.pokemons.forEach((obj)=>{
-      obj.addToScene();
-      obj.tile.select();
+    board.grid.getNeighbors(player.base.cell).forEach(async(cell, i)=>{
+      let obj = new Pokemon({...modelConfig, ...{highlight: player.color, rotation: player.rotation, player: playerIndex}}, (i == 0 ? 'Bulbasaur' : i == 1 ? 'Charmander' : 'Squirtle'));
+      await obj.init();
+      obj.addToScene(cell.tile);
+      player.pokemons.push(obj);
     });
     nextPlayersTurn();
   });

@@ -2,8 +2,22 @@ var allPokemon = {Bulbasaur:{dex:"001"},Ivysaur:{dex:"002"},Venusaur:{dex:"003"}
 
 class Pokemon extends Model {
   constructor(settings, pokemon = 'Bulbasaur', shiny){
-    shiny = !!( shiny != undefined ? shiny : Math.random() < 0.1 );
+    shiny = !!( shiny != undefined ? shiny : Math.random() < 0.1 ); /* 10 percent chance, will lower this later.. maybe */
     settings.url = `./obj/${pokemon.toLowerCase()}/${allPokemon[pokemon].dex} - ${pokemon}${shiny ? ' - Shiny' : ''}`;
     super(settings);
+    this.objectType = 'Pokemon';
+  }
+  select(){
+    let highlight = this.highlight;
+    this.obj.traverse(function(child) {
+      if (child instanceof THREE.Mesh)
+        child.material.color.set(highlight);
+    });
+  }
+  deselect(){
+    this.obj.traverse(function(child) {
+      if (child instanceof THREE.Mesh)
+        child.material.color.set('rgb(255,255,255)');
+    });
   }
 }
