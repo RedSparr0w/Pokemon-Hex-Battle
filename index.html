@@ -128,90 +128,90 @@
       players,
     } = setupBoard(boardSize, totalPlayers);
 
-    window.board = board;
-    // populate the board
-    var pokemons = [], bases = [];
-    var modelConfig = {
-      container: board.group,
-      scale: 3,
-      heightOffset: 0.5,
-    };
+  window.board = board;
+  // populate the board
+  var pokemons = [], bases = [];
+  var modelConfig = {
+    container: board.group,
+    scale: 3,
+    heightOffset: 0.5,
+  };
 
-    /*
-    var vec = new THREE.Vector3();
+  /*
+  var vec = new THREE.Vector3();
 
-    mouse.signal.add(function(evt, obj) {
-      if (evt === vg.MouseCaster.CLICK) {
-        if (obj.objectType === vg.TILE)
-          return obj.toggle();
-        if (obj.objectType === 'Model')
-          obj.select();
-      }
-    }, window);
-    */
+  mouse.signal.add(function(evt, obj) {
+    if (evt === vg.MouseCaster.CLICK) {
+      if (obj.objectType === vg.TILE)
+        return obj.toggle();
+      if (obj.objectType === 'Model')
+        obj.select();
+    }
+  }, window);
+  */
 
-    players.forEach((player)=>{
-      player.base.model = new Model({...modelConfig, ...{highlight: player.color, rotation: player.rotation, tile: player.base, url: './obj/substitute doll/Substitute Doll'}});
-      board.grid.getNeighbors(player.base.cell).forEach((cell, i)=>{
-        player.pokemons.push(new pokemonModel({...modelConfig, ...{highlight: player.color, rotation: player.rotation, tile: cell.tile}}, (i == 0 ? 'Bulbasaur' : i == 1 ? 'Charmander' : 'Squirtle')));
-      });
-
-      player.base.model.addToScene();
-      player.base.select();
-      player.pokemons.forEach((obj)=>{
-        obj.addToScene();
-        obj.tile.select();
-      });
-      nextPlayersTurn();
+  players.forEach((player)=>{
+    player.base.model = new Model({...modelConfig, ...{highlight: player.color, rotation: player.rotation, tile: player.base, url: './obj/substitute doll/Substitute Doll'}});
+    board.grid.getNeighbors(player.base.cell).forEach((cell, i)=>{
+      player.pokemons.push(new pokemonModel({...modelConfig, ...{highlight: player.color, rotation: player.rotation, tile: cell.tile}}, (i == 0 ? 'Bulbasaur' : i == 1 ? 'Charmander' : 'Squirtle')));
     });
 
+    player.base.model.addToScene();
+    player.base.select();
+    player.pokemons.forEach((obj)=>{
+      obj.addToScene();
+      obj.tile.select();
+    });
+    nextPlayersTurn();
+  });
 
-    // handle interaction
-    selector.onSelect.add(function(obj) {
-      if (obj.objectType === vg.TILE) {
-        // select the sprite if one was already there
-        var e = obj.entity;
-        if (e) {
-          selector.select(e, false); // don't fire the signal when firing manually or you'll cause a stack overflow with recursion
-          movingPiece = e; // new move
-        }
-        else {
-          if (movingPiece) {
-            moveEntityToCell(obj);
-            return;
-          }
-          // cycle through the pokemons, placing them on the clicked tile
-          var p = players[currentPlayer].pokemons[currentPiece++].obj;
-          if (currentPiece === players[currentPlayer].pokemons.length) {
-            currentPiece = 0;
-            //currentPlayer = ++currentPlayer % players.length;
-          }
-          board.setEntityOnTile(p, obj);
-        }
+
+  // handle interaction
+  selector.onSelect.add(function(obj) {
+    if (obj.objectType === vg.TILE) {
+      // select the sprite if one was already there
+      var e = obj.entity;
+      if (e) {
+        selector.select(e, false); // don't fire the signal when firing manually or you'll cause a stack overflow with recursion
+        movingPiece = e; // new move
       }
       else {
-        movingPiece = obj.obj;
-        // Move camera to objects position
-        //scene.controls.target = obj.obj.position;
+        if (movingPiece) {
+          moveEntityToCell(obj);
+          return;
+        }
+        // cycle through the pokemons, placing them on the clicked tile
+        var p = players[currentPlayer].pokemons[currentPiece++].obj;
+        if (currentPiece === players[currentPlayer].pokemons.length) {
+          currentPiece = 0;
+          //currentPlayer = ++currentPlayer % players.length;
+        }
+        board.setEntityOnTile(p, obj);
       }
-    }, this);
-
-    /*selector.onDeselect.add(function(obj) {
-
-    }, this);*/
-
-    function moveEntityToCell(tile) {
-      board.setEntityOnTile(movingPiece, tile);
-      movingPiece = null;
     }
-
-    // start the thing
-    update();
-    function update() {
-      mouse.update();
-      scene.render();
-      requestAnimationFrame(update);
+    else {
+      movingPiece = obj.obj;
+      // Move camera to objects position
+      //scene.controls.target = obj.obj.position;
     }
+  }, this);
+
+  /*selector.onDeselect.add(function(obj) {
+
+  }, this);*/
+
+  function moveEntityToCell(tile) {
+    board.setEntityOnTile(movingPiece, tile);
+    movingPiece = null;
+  }
+
+  // start the thing
+  update();
+  function update() {
+    mouse.update();
+    scene.render();
+    requestAnimationFrame(update);
+  }
   </script>
 </body>
 </html>
