@@ -15,11 +15,16 @@ class Pokemon extends Model {
     this.obj._moves = this.obj.moves;
   }
   select(){
-    let highlight = this.highlight;
-    this.obj.traverse(function(child) {
-      if (child instanceof THREE.Mesh)
-        child.material.color.set(highlight);
-    });
+    // we are selecting our own piece
+    if (this.player == currentPlayer){
+      let highlight = this.highlight;
+      this.obj.traverse(function(child) {
+        if (child instanceof THREE.Mesh)
+          child.material.color.set(highlight);
+      });
+
+      movingPiece = this.obj;
+    }
   }
   deselect(){
     this.obj.traverse(function(child) {

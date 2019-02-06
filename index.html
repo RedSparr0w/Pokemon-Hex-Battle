@@ -159,7 +159,6 @@
       var e = obj.entity;
       if (e) {
         selector.select(e, false); // don't fire the signal when firing manually or you'll cause a stack overflow with recursion
-        movingPiece = e; // new move
       }
       else {
         if (movingPiece) {
@@ -174,11 +173,6 @@
         }
         board.setEntityOnTile(p, obj);
       }
-    }
-    else {
-      movingPiece = obj.obj;
-      // Move camera to objects position
-      //scene.controls.target = obj.obj.position;
     }
   }, this);
 
