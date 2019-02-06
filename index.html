@@ -101,23 +101,39 @@
     document.getElementById('player_territory').innerText = territory.length;
     document.getElementById('player_income').innerText = '$' + (territory.length * 10).toLocaleString();
 
+    // Reset our pokemons moves
+    players[currentPlayer].pokemons.forEach((pokemon)=>{
+      pokemon.obj.moves = pokemon.obj._moves;
+    })
+
     scene.controls.target = players[currentPlayer].base.position
   }
 
   vg.Tile.prototype.select = function() {
+    /*
     if (this.material.emissive)
       this.material.emissive.set(players[currentPlayer].color);
     this.team = currentPlayer;
     this.selected = true;
     return this;
+    */
   };
 
   vg.Tile.prototype.deselect = function() {
+    /*
     if (this._emissive !== null && this.material.emissive)
       this.material.emissive.setHex(this._emissive);
     this.team = undefined;
     this.selected = false;
     return this;
+    */
+  };
+
+  vg.Tile.prototype.addToTeam = function(team) {
+    if (this.material.emissive)
+      this.material.emissive.set(players[team].color);
+    this.team = team;
+    this.selected = true;
   };
 
   let {
@@ -142,11 +158,14 @@
     player.base.model = new Model({...modelConfig, ...{highlight: player.color, rotation: player.rotation, url: './obj/substitute doll/Substitute Doll'}});
     await player.base.model.init();
     player.base.model.addToScene(player.base);
+    player.base.addToTeam(playerIndex);
 
     board.grid.getNeighbors(player.base.cell).forEach(async(cell, i)=>{
       let obj = new Pokemon({...modelConfig, ...{highlight: player.color, rotation: player.rotation, player: playerIndex}}, (i == 0 ? 'Bulbasaur' : i == 1 ? 'Charmander' : 'Squirtle'));
       await obj.init();
+      obj.player = playerIndex;
       obj.addToScene(cell.tile);
+      cell.tile.addToTeam(playerIndex);
       player.pokemons.push(obj);
     });
     nextPlayersTurn();
