@@ -162,7 +162,7 @@
 
     board.grid.getNeighbors(player.base.cell).forEach(async(cell, i)=>{
       let obj = new Pokemon({...modelConfig, ...{highlight: player.color, rotation: player.rotation, player: playerIndex}}, (i == 0 ? 'Bulbasaur' : i == 1 ? 'Charmander' : 'Squirtle'));
-      await obj.init();
+      obj.init();
       obj.player = playerIndex;
       obj.addToScene(cell.tile);
       cell.tile.addToTeam(playerIndex);
@@ -192,9 +192,11 @@
     }
   }, this);
 
-  /*selector.onDeselect.add(function(obj) {
+  /*
+  selector.onDeselect.add(function(obj) {
 
-  }, this);*/
+  }, this);
+  */
 
   function moveEntityToCell(tile) {
     board.setEntityOnTile(movingPiece, tile);
