@@ -10,6 +10,9 @@ class Pokemon extends Model {
       this.obj.children[0].material = allPokemon[pokemon].material.materials[key].clone();
     });
     this.objectType = 'Pokemon';
+    // TODO: Set per pokemon rather than using maths
+    this.obj.moves = ((+allPokemon[pokemon].dex - 1) % 3) + 1;
+    this.obj._moves = this.obj.moves;
   }
   select(){
     let highlight = this.highlight;
