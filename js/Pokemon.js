@@ -5,8 +5,10 @@ class Pokemon extends Model {
     shiny = !!( shiny != undefined ? shiny : Math.random() < 0.1 ); /* 10 percent chance, will lower this later.. maybe */
     settings.url = `./obj/${pokemon.toLowerCase()}/${allPokemon[pokemon].dex} - ${pokemon}${shiny ? ' - Shiny' : ''}`;
     super(settings);
-    this.material = allPokemon[pokemon].material;
     this.obj = allPokemon[pokemon].model.clone();
+    Object.keys(allPokemon[pokemon].material.materials).forEach((key)=>{
+      this.obj.children[0].material = allPokemon[pokemon].material.materials[key].clone();
+    });
     this.objectType = 'Pokemon';
   }
   select(){
