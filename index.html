@@ -174,16 +174,20 @@
   // handle interaction
   selector.onSelect.add(function(obj) {
     if (obj.objectType === vg.TILE) {
-      // select the sprite if one was already there
-      var e = obj.entity;
+      // select the object on the tile if it has one
+      let e = obj.entity;
       if (e) {
         selector.select(e, false); // don't fire the signal when firing manually or you'll cause a stack overflow with recursion
       }
-      else {
-        if (movingPiece) {
-          moveEntityToCell(obj);
-          return;
-        }
+      else if (movingPiece) {
+        // check distance between the 2 cells
+        let distance = board.grid.distance(movingPiece.tile.cell, obj.cell);
+        // if distance greater than this pokemons furthest move, don't allow the move
+        if (distance > movingPiece.moves) return;
+        movingPiece.moves -= distance;
+        moveEntityToCell(obj);
+        obj.addToTeam(currentPlayer);
+        return;
       }
     }
   }, this);
