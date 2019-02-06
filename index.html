@@ -165,13 +165,6 @@
           moveEntityToCell(obj);
           return;
         }
-        // cycle through the pokemons, placing them on the clicked tile
-        var p = players[currentPlayer].pokemons[currentPiece++].obj;
-        if (currentPiece === players[currentPlayer].pokemons.length) {
-          currentPiece = 0;
-          //currentPlayer = ++currentPlayer % players.length;
-        }
-        board.setEntityOnTile(p, obj);
       }
     }
   }, this);
