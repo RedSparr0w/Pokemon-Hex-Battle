@@ -106,7 +106,8 @@
       pokemon.obj.moves = pokemon.obj._moves;
     })
 
-    scene.controls.target = players[currentPlayer].base.position
+    // Disabled as when you right click, this object stays still, need to find a better solution.
+    //scene.controls.target = players[currentPlayer].base.position
   }
 
   vg.Tile.prototype.select = function() {
