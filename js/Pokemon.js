@@ -5,14 +5,11 @@ class Pokemon extends Model {
     shiny = !!( shiny != undefined ? shiny : Math.random() < 0.1 ); /* 10 percent chance, will lower this later.. maybe */
     settings.url = `./obj/${pokemon.toLowerCase()}/${allPokemon[pokemon].dex} - ${pokemon}${shiny ? ' - Shiny' : ''}`;
     super(settings);
-    this.obj = allPokemon[pokemon].model.clone();
-    Object.keys(allPokemon[pokemon].material.materials).forEach((key)=>{
-      this.obj.children[0].material = allPokemon[pokemon].material.materials[key].clone();
-    });
+    this.shiny = shiny;
     this.objectType = 'Pokemon';
     // TODO: Set per pokemon rather than using maths
-    this.obj.moves = ((+allPokemon[pokemon].dex - 1) % 3) + 1;
-    this.obj._moves = this.obj.moves;
+    this.moves = ((+allPokemon[pokemon].dex - 1) % 3) + 1;
+    this._moves = this.moves;
   }
   select(){
     // we are selecting our own piece
@@ -38,9 +35,3 @@ function generatePokemonUrl(pokemon = 'Bulbasaur', shiny){
   shiny = !!( shiny != undefined ? shiny : Math.random() < 0.1 ); /* 10 percent chance, will lower this later.. maybe */
   return `/obj/${pokemon.toLowerCase()}/${allPokemon[pokemon].dex} - ${pokemon}${shiny ? ' - Shiny' : ''}`;
 }
-
-Object.keys(allPokemon).forEach(async (pokemon)=>{
-  let url = generatePokemonUrl(pokemon, false);
-  allPokemon[pokemon].material = await getMTL(url);
-  allPokemon[pokemon].model = await getOBJ(url, allPokemon[pokemon].material);
-});
