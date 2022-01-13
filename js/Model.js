@@ -80,7 +80,10 @@ class Model {
       }
     });
     let highlight = this.highlight;
-    this.obj.select = ()=>{this.select()};
+    this.obj.select = ()=>{
+      this.select();
+      scene.controls.target = this.obj.position;
+    };
     this.obj.deselect = ()=>{this.deselect()};
   }
 
