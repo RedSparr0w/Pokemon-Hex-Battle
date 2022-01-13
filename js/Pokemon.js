@@ -5,6 +5,7 @@ const allPokemon = {
   Charmander:{dex:"004"},
   Charmeleon:{dex:"005"},
   Charizard:{dex:"006"},
+  Squirtle:{dex:"007"},
   Wartortle:{dex:"008"},
   Blastoise:{dex:"009"},
   /*
