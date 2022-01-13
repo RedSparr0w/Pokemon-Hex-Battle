@@ -158,7 +158,7 @@ class Pokemon extends Model {
   level = 1
   constructor(settings, pokemon = 'Bulbasaur', shiny){
     shiny = !!( shiny != undefined ? shiny : Math.random() < 0.1 ); /* 10 percent chance, will lower this later.. maybe */
-    settings.url = `./obj/${pokemon.toLowerCase()}/${allPokemon[pokemon].dex} - ${pokemon}${shiny ? ' - Shiny' : ''}`;
+    settings.url = `obj/${pokemon.toLowerCase()}/${allPokemon[pokemon].dex} - ${pokemon}${shiny ? ' - Shiny' : ''}`;
     super(settings);
     this.obj = allPokemon[pokemon].model.clone();
     Object.keys(allPokemon[pokemon].material.materials).forEach((key)=>{
@@ -220,7 +220,7 @@ class Pokemon extends Model {
 
 function generatePokemonUrl(pokemon = 'Bulbasaur', shiny){
   shiny = !!( shiny != undefined ? shiny : Math.random() < 0.1 ); /* 10 percent chance, will lower this later.. maybe */
-  return `/obj/${pokemon.toLowerCase()}/${allPokemon[pokemon].dex} - ${pokemon}${shiny ? ' - Shiny' : ''}`;
+  return `obj/${pokemon.toLowerCase()}/${allPokemon[pokemon].dex} - ${pokemon}${shiny ? ' - Shiny' : ''}`;
 }
 
 Object.keys(allPokemon).forEach(async (pokemon)=>{

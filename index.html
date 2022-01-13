@@ -157,7 +157,7 @@
   };
 
   players.forEach(async (player, playerIndex)=>{
-    player.base.model = new Model({...modelConfig, ...{highlight: player.color, rotation: player.rotation, url: './obj/substitute doll/Substitute Doll'}});
+    player.base.model = new Model({...modelConfig, ...{highlight: player.color, rotation: player.rotation, url: 'obj/substitute doll/Substitute Doll'}});
     await player.base.model.init();
     player.base.model.addToScene(player.base);
     player.base.addToTeam(playerIndex);
