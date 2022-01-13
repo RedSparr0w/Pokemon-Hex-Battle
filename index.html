@@ -95,6 +95,7 @@
     players[currentPlayer].bank -= players[currentPlayer].pokemons.length * 20;
 
     document.getElementById('player_name').innerText = players[currentPlayer].name || `Player ${currentPlayer + 1}`;
+    document.getElementById('player_name').style.color = players[currentPlayer].color;
     document.getElementById('player_bank').innerText = '$' + players[currentPlayer].bank.toLocaleString();
     document.getElementById('player_units').innerText = players[currentPlayer].pokemons.length;
     document.getElementById('player_upkeep').innerText = '-$' + (players[currentPlayer].pokemons.length * 20).toLocaleString();
@@ -107,7 +108,7 @@
     })
 
     // Disabled as when you right click, this object stays still, need to find a better solution.
-    //scene.controls.target = players[currentPlayer].base.position
+    scene.controls.target = players[currentPlayer].base.position
   }
 
   vg.Tile.prototype.select = function() {
