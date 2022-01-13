@@ -7,6 +7,7 @@ const allPokemon = {
   Charizard:{dex:"006"},
   Wartortle:{dex:"008"},
   Blastoise:{dex:"009"},
+  /*
   Caterpie:{dex:"010"},
   Metapod:{dex:"011"},
   Butterfree:{dex:"012"},
@@ -149,6 +150,7 @@ const allPokemon = {
   Dragonite:{dex:"149"},
   Mewtwo:{dex:"150"},
   Mew:{dex:"151"},
+  */
 };
 
 class Pokemon extends Model {
