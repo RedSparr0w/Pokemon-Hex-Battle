@@ -109,6 +109,9 @@
 
     // Disabled as when you right click, this object stays still, need to find a better solution.
     scene.controls.target = players[currentPlayer].base.position
+    scene.camera.position.setX(players[currentPlayer].base.position.x)
+    scene.camera.position.setY(183)
+    scene.camera.position.setZ(players[currentPlayer].base.position.z)
   }
 
   vg.Tile.prototype.select = function() {
